@@ -1645,6 +1645,17 @@ function createOAPIEmitter(
       ) {
         schema.enum = [...new Set([...schema.enum, ...apply.schema.enum])];
       }
+      if (
+        "x-enum-varnames" in schema &&
+        schema["x-enum-varnames"] &&
+        apply.schema &&
+        "x-enum-varnames" in apply.schema &&
+        apply.schema["x-enum-varnames"]
+      ) {
+        schema["x-enum-varnames"] = [
+          ...new Set([...schema["x-enum-varnames"], ...apply.schema["x-enum-varnames"]]),
+        ];
+      }
       target.schema = schema;
     } else {
       Object.assign(target, apply);

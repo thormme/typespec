@@ -527,6 +527,8 @@ export type OpenAPI3Schema = Extensions & {
    */
   enum?: (string | number | boolean)[];
 
+  "x-enum-varnames"?: (string | null)[];
+
   /**
    * Functionally equivalent to "enum" with a single value.
    * An instance validates successfully if its value is equal to the value of this keyword.
@@ -784,6 +786,8 @@ export type JsonSchema<AdditionalVocabularies extends {} = {}> = AdditionalVocab
    * @see https://json-schema.org/draft/2020-12/json-schema-validation#name-enum
    */
   enum?: (string | number | boolean | null)[];
+
+  "x-enum-varnames"?: (string | null)[];
 
   /**
    * Functionally equivalent to "enum" with a single value.

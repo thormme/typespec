@@ -185,9 +185,11 @@ export class OpenAPI31SchemaEmitter extends OpenAPI3SchemaEmitterBase<OpenAPISch
 
     const enumTypes = new Set<JsonType>();
     const enumValues = new Set<string | number>();
+    const enumKeyNames = new Set<string>();
     for (const member of en.members.values()) {
       enumTypes.add(typeof member.value === "number" ? "number" : "string");
       enumValues.add(member.value ?? member.name);
+      enumKeyNames.add(member.name ?? null);
     }
 
     const enumTypesArray = [...enumTypes];
@@ -195,6 +197,7 @@ export class OpenAPI31SchemaEmitter extends OpenAPI3SchemaEmitterBase<OpenAPISch
     const schema: OpenAPISchema3_1 = {
       type: enumTypesArray.length === 1 ? enumTypesArray[0] : enumTypesArray,
       enum: [...enumValues],
+      "x-enum-varnames": [...enumKeyNames],
     };
 
     return this.applyConstraints(en, schema);

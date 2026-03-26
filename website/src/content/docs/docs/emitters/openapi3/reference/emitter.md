@@ -106,8 +106,8 @@ This extension is meant for debugging and should not be depended on.
 
 **Type:** `boolean`
 
-If the generated openapi types should have the `x-enum-varnames` extension filled for enum types.
-This maintains the key of any enum value the defines it in the form `key: value`.
+If the generated openapi enums should have the `x-enum-varnames` extension filled.
+This maintains the key of any enum value that defines it in the form `key: value`.
 The default behavior is to use the value as both the key and value.
 
 ### `safeint-strategy`

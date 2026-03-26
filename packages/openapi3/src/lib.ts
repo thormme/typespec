@@ -69,8 +69,8 @@ export interface OpenAPI3EmitterOptions {
   "include-x-typespec-name"?: "inline-only" | "never";
 
   /**
-   * If the generated openapi types should have the `x-enum-varnames` extension filled for enum types.
-   * This maintains the key of any enum value the defines it in the form `key: value`.
+   * If the generated openapi enums should have the `x-enum-varnames` extension filled.
+   * This maintains the key of any enum value that defines it in the form `key: value`.
    * The default behavior is to use the value as both the key and value.
    * @default false
    */
@@ -230,7 +230,7 @@ const EmitterOptionsSchema: JSONSchemaType<OpenAPI3EmitterOptions> = {
       nullable: true,
       default: false,
       description:
-        "If the generated openapi types should have the `x-enum-varnames` extension filled for enum types.\nThis maintains the key of any enum value the defines it in the form `key: value`.\nThe default behavior is to use the value as both the key and value.",
+        "If the generated openapi enums should have the `x-enum-varnames` extension filled.\nThis maintains the key of any enum value that defines it in the form `key: value`.\nThe default behavior is to use the value as both the key and value.",
     },
     "safeint-strategy": {
       type: "string",

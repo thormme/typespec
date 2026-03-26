@@ -116,6 +116,8 @@ If the generated openapi enums should have the `x-enum-varnames` extension fille
 This maintains the key of any enum value that defines it in the form `key: value`.
 The default behavior is to use the value as both the key and value.
 
+Default: `false`
+
 ### `safeint-strategy`
 
 **Type:** `"double-int" | "int64"`

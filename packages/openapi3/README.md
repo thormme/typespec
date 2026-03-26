@@ -108,6 +108,14 @@ By default all types declared under the service namespace will be included. With
 If the generated openapi types should have the `x-typespec-name` extension set with the name of the TypeSpec type that created it.
 This extension is meant for debugging and should not be depended on.
 
+### `include-x-enum-varnames`
+
+**Type:** `boolean`
+
+If the generated openapi types should have the `x-enum-varnames` extension filled for enum types.
+This maintains the key of any enum value the defines it in the form `key: value`.
+The default behavior is to use the value as both the key and value.
+
 ### `safeint-strategy`
 
 **Type:** `"double-int" | "int64"`

@@ -26,6 +26,7 @@ export async function getOpenApi3ServiceRecord(
 
   const serviceRecords = await openapi3.getOpenAPI3(program, {
     "include-x-typespec-name": "never",
+    "include-x-enum-varnames": false,
     "omit-unreachable-types": true,
     "safeint-strategy": "int64",
   });

@@ -194,11 +194,18 @@ export class OpenAPI31SchemaEmitter extends OpenAPI3SchemaEmitterBase<OpenAPISch
 
     const enumTypesArray = [...enumTypes];
 
-    const schema: OpenAPISchema3_1 = {
+    let schema: OpenAPISchema3_1 = {
       type: enumTypesArray.length === 1 ? enumTypesArray[0] : enumTypesArray,
       enum: [...enumValues],
-      "x-enum-varnames": [...enumKeyNames],
     };
+
+    if (this._options.includeXEnumVarNames) {
+      schema = {
+        type: schema.type,
+        enum: schema.enum,
+        "x-enum-varnames": [...enumKeyNames],
+      };
+    }
 
     return this.applyConstraints(en, schema);
   }

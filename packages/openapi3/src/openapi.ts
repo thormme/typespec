@@ -139,6 +139,7 @@ const defaultOptions = {
   "new-line": "lf",
   "omit-unreachable-types": false,
   "include-x-typespec-name": "never",
+  "include-x-enum-varnames": false,
   "safeint-strategy": "int64",
   "seal-object-schemas": false,
 } as const;
@@ -225,6 +226,7 @@ export function resolveOptions(
     newLine: resolvedOptions["new-line"],
     omitUnreachableTypes: resolvedOptions["omit-unreachable-types"],
     includeXTypeSpecName: resolvedOptions["include-x-typespec-name"],
+    includeXEnumVarNames: resolvedOptions["include-x-enum-varnames"],
     safeintStrategy: resolvedOptions["safeint-strategy"],
     outputFile: resolvePath(context.emitterOutputDir, specDir, outputFile),
     openapiVersions,
@@ -268,6 +270,7 @@ export interface ResolvedOpenAPI3EmitterOptions {
   newLine: NewLine;
   omitUnreachableTypes: boolean;
   includeXTypeSpecName: "inline-only" | "never";
+  includeXEnumVarNames: boolean;
   safeintStrategy: "double-int" | "int64";
   sealObjectSchemas: boolean;
   parameterExamplesStrategy?: "data" | "serialized";

@@ -1646,18 +1646,34 @@ function createOAPIEmitter(
         "enum" in apply.schema &&
         apply.schema.enum
       ) {
-        schema.enum = [...new Set([...schema.enum, ...apply.schema.enum])];
-      }
-      if (
-        "x-enum-varnames" in schema &&
-        schema["x-enum-varnames"] &&
-        apply.schema &&
-        "x-enum-varnames" in apply.schema &&
-        apply.schema["x-enum-varnames"]
-      ) {
-        schema["x-enum-varnames"] = [
-          ...new Set([...schema["x-enum-varnames"], ...apply.schema["x-enum-varnames"]]),
-        ];
+        const hasEnumVarnames =
+          "x-enum-varnames" in schema &&
+          schema["x-enum-varnames"] &&
+          "x-enum-varnames" in apply.schema &&
+          apply.schema["x-enum-varnames"];
+
+        // Merge enum values and varnames together via a map so that
+        // deduplication by enum value keeps the two arrays index-aligned.
+        const mergedEnumMembers = new Map<string | number | boolean, string | undefined>();
+        for (let i = 0; i < schema.enum.length; i++) {
+          mergedEnumMembers.set(
+            schema.enum[i],
+            hasEnumVarnames ? schema["x-enum-varnames"]![i] : undefined,
+          );
+        }
+        for (let i = 0; i < apply.schema.enum.length; i++) {
+          if (!mergedEnumMembers.has(apply.schema.enum[i])) {
+            mergedEnumMembers.set(
+              apply.schema.enum[i],
+              hasEnumVarnames ? apply.schema["x-enum-varnames"]![i] : undefined,
+            );
+          }
+        }
+
+        schema.enum = [...mergedEnumMembers.keys()];
+        if (hasEnumVarnames) {
+          schema["x-enum-varnames"] = [...mergedEnumMembers.values()] as string[];
+        }
       }
       target.schema = schema;
     } else {

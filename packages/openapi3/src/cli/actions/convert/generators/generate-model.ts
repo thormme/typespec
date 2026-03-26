@@ -61,8 +61,7 @@ function generateEnum(tsEnum: TypeSpecEnum): string {
   if (schema.enum && schema["x-enum-varnames"]) {
     definitions.push(
       ...schema.enum.map(
-        (e, i) =>
-          `${schema["x-enum-varnames"] && schema["x-enum-varnames"][i] ? schema["x-enum-varnames"][i] : JSON.stringify(e)}: ${JSON.stringify(e)},`,
+        (e, i) => `${schema["x-enum-varnames"][i] ?? JSON.stringify(e)}: ${JSON.stringify(e)},`,
       ),
     );
   } else if (schema.enum) {

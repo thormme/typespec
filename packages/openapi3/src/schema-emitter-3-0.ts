@@ -120,29 +120,23 @@ export class OpenAPI3SchemaEmitter extends OpenAPI3SchemaEmitterBase<OpenAPI3Sch
     }
 
     const enumTypes = new Set<JsonType>();
-    const enumValues = new Set<string | number>();
-    const enumKeyNames = new Set<string>();
+    const enumMembers = new Map<string | number, string>();
     for (const member of en.members.values()) {
       enumTypes.add(typeof member.value === "number" ? "number" : "string");
-      enumValues.add(member.value ?? member.name);
-      enumKeyNames.add(member.name ?? null);
+      enumMembers.set(member.value ?? member.name, member.name);
     }
 
     if (enumTypes.size > 1) {
       reportDiagnostic(program, { code: "enum-unique-type", target: en });
     }
 
-    let schema: OpenAPI3Schema = {
+    const schema: OpenAPI3Schema = {
       type: enumTypes.values().next().value!,
-      enum: [...enumValues],
+      enum: [...enumMembers.keys()],
     };
 
     if (this._options.includeXEnumVarNames) {
-      schema = {
-        type: schema.type,
-        enum: schema.enum,
-        "x-enum-varnames": [...enumKeyNames],
-      };
+      schema["x-enum-varnames"] = [...enumMembers.values()];
     }
 
     return this.applyConstraints(en, schema);

@@ -66,6 +66,51 @@ worksFor(supportedVersions, ({ oapiForModel, openApiFor, openapiWithOptions }) =
     });
   });
 
+  describe("openapi3: x-enum-varnames", () => {
+    it("doesn't include x-enum-varnames by default", async () => {
+      const output = await openapiWithOptions(
+        `
+      enum Foo { A: "a", B: "b" }
+    `,
+        {},
+      );
+      ok(!("x-enum-varnames" in output.components!.schemas!.Foo));
+    });
+
+    it(`doesn't include x-enum-varnames when option is false`, async () => {
+      const output = await openapiWithOptions(
+        `
+      enum Foo { A: "a", B: "b" }
+    `,
+        { "include-x-enum-varnames": false },
+      );
+      ok(!("x-enum-varnames" in output.components!.schemas!.Foo));
+    });
+
+    it(`includes x-enum-varnames when option is true`, async () => {
+      const output = await openapiWithOptions(
+        `
+      enum Foo { A: "a", B: "b" }
+    `,
+        { "include-x-enum-varnames": true },
+      );
+      const schema: any = output.components!.schemas!.Foo;
+      deepStrictEqual(schema["x-enum-varnames"], ["A", "B"]);
+    });
+
+    it(`x-enum-varnames stays aligned with enum values when members share values`, async () => {
+      const output = await openapiWithOptions(
+        `
+      enum Foo { A: "a", B: "b", AlsoA: "a" }
+    `,
+        { "include-x-enum-varnames": true },
+      );
+      const schema: any = output.components!.schemas!.Foo;
+      deepStrictEqual(schema.enum, ["a", "b"]);
+      deepStrictEqual(schema["x-enum-varnames"], ["AlsoA", "B"]);
+    });
+  });
+
   describe("openapi3: literals", () => {
     const cases = [
       ["1", { type: "number", enum: [1] }],
